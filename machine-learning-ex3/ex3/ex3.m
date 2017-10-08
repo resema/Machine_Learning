@@ -68,7 +68,6 @@ fprintf(' %f \n', grad);
 fprintf('Expected gradients:\n');
 fprintf(' 0.146561\n -0.548558\n 0.724722\n 1.398003\n');
 
-return;
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
