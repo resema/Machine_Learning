@@ -40,10 +40,13 @@ Theta2_grad = zeros(size(Theta2));
 %         computed in ex4.m
 %
 
+% Forward Propagation
 a1 = [ones(m,1) X];
-a2 = sigmoid(a1 * Theta1');
+z2 = a1 * Theta1';
+a2 = sigmoid(z2);
 a2 = [ones(m,1) a2];
-a3 = sigmoid(a2 * Theta2');
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
 yVec = ones(m, num_labels);
 for i = 1:m
@@ -51,6 +54,12 @@ for i = 1:m
 endfor
 
 J = 1/m * sum(diag( -yVec' * log(a3) - (1-yVec)' * log(1-a3)));
+
+Theta1_vec = reshape(Theta1(:, 2:end), 1, []);
+Theta2_vec = reshape(Theta2(:, 2:end), 1, []);
+
+% Regularization
+J = J + lambda / (2*m) * (Theta1_vec * Theta1_vec' + Theta2_vec * Theta2_vec');
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -68,10 +77,16 @@ J = 1/m * sum(diag( -yVec' * log(a3) - (1-yVec)' * log(1-a3)));
 %               first time.
 %
 
-Theta1_vec = reshape(Theta1(:, 2:end), 1, []);
-Theta2_vec = reshape(Theta2(:, 2:end), 1, []);
+% Back Propagation
+d3 = a3 - yVec;
+d2 = d3 * Theta2 .* [ones(m,1) sigmoidGradient(z2)];
+d2 = d2(:,2:end);
 
-J = J + lambda / (2*m) * (Theta1_vec * Theta1_vec' + Theta2_vec * Theta2_vec');
+Theta2_grad = Theta2_grad + d3' * a2;
+Theta1_grad = Theta1_grad + d2' * a1;
+
+Theta2_grad = 1/m * Theta2_grad;
+Theta1_grad = 1/m * Theta1_grad;
 
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -82,7 +97,8 @@ J = J + lambda / (2*m) * (Theta1_vec * Theta1_vec' + Theta2_vec * Theta2_vec');
 %
 % -------------------------------------------------------------
 
-
+Theta2_grad += lambda/m * [zeros(num_labels,1), Theta2(:,2:end)];
+Theta1_grad += lambda/m * [zeros(hidden_layer_size,1), Theta1(:,2:end)];
 
 % =========================================================================
 
