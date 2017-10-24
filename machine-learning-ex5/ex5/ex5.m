@@ -66,8 +66,8 @@ theta = [1 ; 1];
 
 fprintf(['Gradient at theta = [1 ; 1]:  [%f; %f] '...
          '\n(this value should be about [-15.303016; 598.250744])\n'], ...
-         grad(1), grad(2));
-         
+         grad(1), grad(2));  
+       
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -92,8 +92,6 @@ ylabel('Water flowing out of the dam (y)');
 hold on;
 plot(X, [ones(m, 1) X]*theta, '--', 'LineWidth', 2)
 hold off;
-
-return;
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
@@ -123,6 +121,8 @@ fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
 for i = 1:m
     fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i));
 end
+
+return;
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
