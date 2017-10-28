@@ -23,11 +23,31 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+%% result from code below
+C = 1;
+sigma = 0.1;
 
+return;
 
+% code to find best C and sigma
+params = [0.01,0.03,0.1,0.3,1,3,10,30];
+l = length(params);
+minError = inf;
 
-
-
+for i = 1:l
+  C_ = params(i);
+  for j = 1:l
+    sigma_ = params(j);
+    model = svmTrain(X, y, C_, @(x1, x2) gaussianKernel(x1, x2, sigma_));
+    predictions = svmPredict(model, Xval);
+    error = mean(double(predictions ~= yval));
+    if minError > error
+      minError = error;
+      C = C_;
+      sigma = sigma_;
+    endif
+  end
+end
 
 % =========================================================================
 
