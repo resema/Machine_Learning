@@ -35,25 +35,15 @@ Theta_grad = zeros(size(Theta));
 % You should set the following variables correctly:
 %
 %        X_grad - num_movies x num_features matrix, containing the 
-%                 partial derivatives w.r.t. to each element of X
+%                 partial derivatives w.r0.t. to each element of X
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+J = (1/2) * sum(sum(R .* ((X * Theta') - Y).^2));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+X_grad = (R .* ((X * Theta') - Y)) * Theta; 
+Theta_grad = (R .* ((X * Theta') - Y))' * X;
 
 % =============================================================
 
